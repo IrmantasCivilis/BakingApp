@@ -11,11 +11,11 @@ public class Recipe {
     private int mServings;
     private String mImage;
 
-    public Recipe(int id, String name, List<Ingredient> ingredient, List<Step> step, int serving, String image) {
+    public Recipe(int id, String name, List<Ingredient> ingredients, List<Step> steps, int serving, String image) {
         mId = id;
         mName = name;
-        mIngredients = ingredient;
-        mSteps = step;
+        mIngredients = ingredients;
+        mSteps = steps;
         mServings = serving;
         mImage = image;
     }
@@ -28,11 +28,11 @@ public class Recipe {
         return mName;
     }
 
-    public List<Ingredient> getIngredient() {
+    public List<Ingredient> getIngredients() {
         return mIngredients;
     }
 
-    public List<Step> getStep() {
+    public List<Step> getSteps() {
         return mSteps;
     }
 
