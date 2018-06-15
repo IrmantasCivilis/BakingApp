@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.android.bakingapp.models.Ingredient;
 import com.example.android.bakingapp.models.Recipe;
+import com.example.android.bakingapp.models.Step;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +40,7 @@ public class JsonUtils {
         List<Recipe> recipes = new ArrayList<>();
 
         try {
+
             JSONArray recipesArray = new JSONArray(json);
 
             for (int i = 0; i < recipesArray.length(); i++) {
@@ -53,7 +55,7 @@ public class JsonUtils {
 
                 JSONArray ingredientsArray = currentRecipe.optJSONArray(KEY_INGREDIENTS);
 
-                for (int j = 0; j < ingredientsArray.length(); j++ ) {
+                for (int j = 0; j < ingredientsArray.length(); j++) {
 
                     JSONObject currentIngredient = ingredientsArray.getJSONObject(j);
 
@@ -66,9 +68,38 @@ public class JsonUtils {
                     Ingredient recipeIngredient = new Ingredient(quantity, measure, ingredient);
 
                     ingredients.add(recipeIngredient);
-
-                    //TODO Finish Json parsing
                 }
+
+                List<Step> steps = new ArrayList<>();
+
+                JSONArray stepsArray = currentRecipe.optJSONArray(KEY_STEPS);
+
+                for (int k = 0; k < stepsArray.length(); k++) {
+
+                    JSONObject currentStep = stepsArray.getJSONObject(k);
+
+                    int stepId = currentStep.getInt(KEY_STEP_ID);
+
+                    String shortDescription = currentStep.getString(KEY_SHORT_DESCRIPTION);
+
+                    String description = currentStep.getString(KEY_DESCRIPTION);
+
+                    String videoURL = currentStep.getString(KEY_VIDEO_URL);
+
+                    String thumbnailURL = currentStep.getString(KEY_THUMBNAIL_URL);
+
+                    Step recipeStep = new Step(stepId, shortDescription, description, videoURL, thumbnailURL);
+
+                    steps.add(recipeStep);
+                }
+
+                int servings = currentRecipe.getInt(KEY_SERVINGS);
+
+                String image = currentRecipe.getString(KEY_IMAGE);
+
+                Recipe recipe = new Recipe(recipeId, recipeName, ingredients, steps, servings, image);
+
+                recipes.add(recipe);
             }
 
         } catch (JSONException e) {
