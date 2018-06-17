@@ -1,24 +1,22 @@
-<resources>
-    <string name="app_name">Baking App</string>
-    <string name="baking_json">[
+﻿[
   {
-    \"id\": 1,
-    \"name\": \"Nutella Pie\",
-    \"ingredients\": [
+    "id": 1,
+    "name": "Nutella Pie",
+    "ingredients": [
       {
-        \"quantity\": 2,
-        \"measure\": \"CUP\",
-        \"ingredient\": \"Graham Cracker crumbs\"
+        "quantity": 2,
+        "measure": "CUP",
+        "ingredient": "Graham Cracker crumbs"
       },
       {
-        \"quantity\": 6,
-        \"measure\": \"TBLSP\",
-        \"ingredient\": \"unsalted butter, melted\"
+        "quantity": 6,
+        "measure": "TBLSP",
+        "ingredient": "unsalted butter, melted"
       },
       {
-        \"quantity\": 0.5,
-        \"measure\": \"CUP\",
-        \"ingredient\": \"granulated sugar\"
+        "quantity": 0.5,
+        "measure": "CUP",
+        "ingredient": "granulated sugar"
       },
       {
         "quantity": 1.5,
@@ -533,5 +531,3 @@
     "image": ""
   }
 ]
-</string>
-</resources>

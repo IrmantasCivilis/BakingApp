@@ -1,5 +1,7 @@
 package com.example.android.bakingapp.utils;
 
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -11,6 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +114,32 @@ public class JsonUtils {
         }
 
         return recipes;
+    }
+
+    public static String getJSONString (Context context) {
+
+        StringBuilder output = new StringBuilder();
+
+        try {
+            AssetManager assetManager = context.getAssets();
+            InputStream inputStream = assetManager.open("baking_json.txt");
+
+
+            if (inputStream != null) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, Charset.forName("UTF-8"));
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                String line = reader.readLine();
+                while (line != null) {
+                    output.append(line);
+                    line = reader.readLine();
+                }
+            }
+
+        } catch (IOException e) {
+            Log.e("JsonUtils", "Problem converting file to string");
+
+        }
+        return output.toString();
     }
 
 }
