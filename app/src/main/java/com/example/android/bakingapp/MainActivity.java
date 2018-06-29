@@ -1,5 +1,6 @@
 package com.example.android.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.android.bakingapp.adapters.RecipesAdapter;
 import com.example.android.bakingapp.models.Recipe;
+import com.example.android.bakingapp.models.Step;
 import com.example.android.bakingapp.utils.JsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements RecipesAdapter.RecipeItemClickListener {
@@ -35,5 +38,22 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Re
     @Override
     public void onRecipeItemClick(Recipe clickedRecipe) {
 
+        String recipeName = clickedRecipe.getName();
+
+        ArrayList<String> steps = new ArrayList<>();
+        List<Step> recipeSteps = clickedRecipe.getSteps();
+        for (int i = 0; i <recipeSteps.size(); i ++  ) {
+            String shortDescription = recipeSteps.get(i).getShortDescription();
+            steps.add(shortDescription);
+        }
+
+        Bundle recipe = new Bundle();
+        recipe.putString("Name", recipeName);
+        recipe.putStringArrayList("Steps", steps);
+
+        Intent startRecipeDetailIntent = new Intent(MainActivity.this, RecipeDetailActivity.class);
+        startRecipeDetailIntent.putExtra("Clicked Recipe", recipe);
+
+        startActivity(startRecipeDetailIntent);
     }
 }
