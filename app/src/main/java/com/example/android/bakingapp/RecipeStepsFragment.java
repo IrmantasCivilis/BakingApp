@@ -1,5 +1,6 @@
 package com.example.android.bakingapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +15,9 @@ import com.example.android.bakingapp.adapters.StepsAdapter;
 
 import java.util.ArrayList;
 
-public class RecipeStepsFragment extends Fragment implements StepsAdapter.StepItemClickListener {
+public class RecipeStepsFragment extends Fragment {
+
+    StepsAdapter.StepItemClickListener mCallback;
 
     public RecipeStepsFragment() {
     }
@@ -32,16 +35,26 @@ public class RecipeStepsFragment extends Fragment implements StepsAdapter.StepIt
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
             mRecyclerView.setLayoutManager(mLayoutManager);
             mRecyclerView.setHasFixedSize(true);
-            StepsAdapter mStepsAdapter = new StepsAdapter(getContext(), steps, this);
+            StepsAdapter mStepsAdapter = new StepsAdapter(getContext(), steps, mCallback);
             mRecyclerView.setAdapter(mStepsAdapter);
         }
 
         return rootView;
     }
 
+    //@Override
+    //public void onStepItemClick(int clickedPosition) {
+      //  }
+
     @Override
-    public void onStepItemClick(String clickedStep) {
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
+        try {
+            mCallback = (StepsAdapter.StepItemClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnImageClickListener");
+        }
     }
-
 }

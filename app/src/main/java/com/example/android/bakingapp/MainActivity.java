@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Re
     public void onRecipeItemClick(Recipe clickedRecipe) {
 
         String recipeName = clickedRecipe.getName();
+        int recipeId = clickedRecipe.getId() - 1;
 
         ArrayList<String> steps = new ArrayList<>();
         List<Step> recipeSteps = clickedRecipe.getSteps();
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements RecipesAdapter.Re
         Bundle recipe = new Bundle();
         recipe.putString("Name", recipeName);
         recipe.putStringArrayList("Steps", steps);
+        recipe.putInt("Recipe Id", recipeId);
 
         Intent startRecipeDetailIntent = new Intent(MainActivity.this, RecipeDetailActivity.class);
         startRecipeDetailIntent.putExtra("Clicked Recipe", recipe);
