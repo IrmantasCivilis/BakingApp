@@ -1,4 +1,4 @@
-package com.example.android.bakingapp;
+package com.example.android.bakingapp.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.adapters.StepsAdapter;
 
 import java.util.ArrayList;
@@ -41,10 +42,6 @@ public class RecipeStepsFragment extends Fragment {
 
         return rootView;
     }
-
-    //@Override
-    //public void onStepItemClick(int clickedPosition) {
-      //  }
 
     @Override
     public void onAttach(Context context) {

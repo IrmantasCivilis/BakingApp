@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.android.bakingapp.fragments.InstructionFragment;
+import com.example.android.bakingapp.fragments.MediaPlayerFragment;
 import com.example.android.bakingapp.models.Recipe;
 import com.example.android.bakingapp.utils.JsonUtils;
 
@@ -21,6 +23,7 @@ public class RecipeStepActivity extends AppCompatActivity {
     int id;
     int recipeId;
     InstructionFragment mInstructionFragment;
+    MediaPlayerFragment mMediaPlayerFragment;
     FragmentManager mFragmentManager;
     TextView textView;
     List<Recipe> recipes;
@@ -65,6 +68,16 @@ public class RecipeStepActivity extends AppCompatActivity {
             mFragmentManager = getSupportFragmentManager();
             mFragmentManager.beginTransaction()
                     .add(R.id.instruction_container, mInstructionFragment)
+                    .commit();
+
+            String videoURL = recipes.get(recipeId).getSteps().get(id).getVideoURL();
+            mMediaPlayerFragment = new MediaPlayerFragment();
+            Bundle videoBundle = new Bundle();
+            videoBundle.putString("Video URL", videoURL);
+            mMediaPlayerFragment.setArguments(videoBundle);
+
+            mFragmentManager.beginTransaction()
+                    .add(R.id.media_container, mMediaPlayerFragment)
                     .commit();
         }
     }
