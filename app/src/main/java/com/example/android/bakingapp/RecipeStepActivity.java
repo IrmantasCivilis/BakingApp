@@ -105,6 +105,16 @@ public class RecipeStepActivity extends AppCompatActivity {
                 .replace(R.id.instruction_container, mInstructionFragment)
                 .commit();
 
+        String videoURL = recipes.get(recipeId).getSteps().get(id).getVideoURL();
+        mMediaPlayerFragment = new MediaPlayerFragment();
+        Bundle videoBundle = new Bundle();
+        videoBundle.putString("Video URL",videoURL);
+        mMediaPlayerFragment.setArguments(videoBundle);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.media_container, mMediaPlayerFragment)
+                .commit();
+
     }
 
     public void clickNextStep(View view){
@@ -126,5 +136,16 @@ public class RecipeStepActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.instruction_container,mInstructionFragment)
                 .commit();
+
+        String videoURL = recipes.get(recipeId).getSteps().get(id).getVideoURL();
+        mMediaPlayerFragment = new MediaPlayerFragment();
+        Bundle videoBundle = new Bundle();
+        videoBundle.putString("Video URL",videoURL);
+        mMediaPlayerFragment.setArguments(videoBundle);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.media_container, mMediaPlayerFragment)
+                .commit();
+
     }
 }
