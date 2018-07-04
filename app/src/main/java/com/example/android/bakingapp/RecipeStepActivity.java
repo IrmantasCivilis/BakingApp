@@ -33,60 +33,82 @@ public class RecipeStepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
 
-        textView = findViewById(R.id.step_id_text_view);
-        previousButton = findViewById(R.id.button_previous);
-        nextButton = findViewById(R.id.button_next);
+        View view = findViewById(R.id.media_container_landscape);
+        if (view != null) {
+            Intent intentThatStartedThisActivity = getIntent();
+            if (intentThatStartedThisActivity.hasExtra("Step Id")) {
+                Bundle bundle = intentThatStartedThisActivity.getBundleExtra("Step Id");
+                id = bundle.getInt("Step");
+                recipeId = bundle.getInt("Recipe Id");
+                String bakingJson = JsonUtils.getJSONString(this);
+                recipes = JsonUtils.extractFeaturesFromJson(bakingJson);
+                String videoURL = recipes.get(recipeId).getSteps().get(id).getVideoURL();
+                mMediaPlayerFragment = new MediaPlayerFragment();
+                Bundle videoBundle = new Bundle();
+                videoBundle.putString("Video URL", videoURL);
+                mMediaPlayerFragment.setArguments(videoBundle);
 
-        Intent intentThatStartedThisActivity = getIntent();
-
-        if (intentThatStartedThisActivity.hasExtra("Step Id")){
-            Bundle bundle = intentThatStartedThisActivity.getBundleExtra("Step Id");
-            id = bundle.getInt("Step");
-
-
-            recipeId = bundle.getInt("Recipe Id");
-            textView.setText(String.valueOf(id));
-
-            String bakingJson = JsonUtils.getJSONString(this);
-            recipes = JsonUtils.extractFeaturesFromJson(bakingJson);
-
-            String title = recipes.get(recipeId).getName();
-            setTitle(title);
-            String instruction = recipes.get(recipeId).getSteps().get(id).getDescription();
-            if(id == 0){
-                previousButton.setVisibility(View.INVISIBLE);
+                mFragmentManager.beginTransaction()
+                        .add(R.id.media_container_landscape, mMediaPlayerFragment)
+                        .commit();
             }
-            if (id == recipes.get(recipeId).getSteps().size() - 1){
-                nextButton.setVisibility(View.INVISIBLE);
+        } else {
+
+            textView = findViewById(R.id.step_id_text_view);
+            previousButton = findViewById(R.id.button_previous);
+            nextButton = findViewById(R.id.button_next);
+
+            Intent intentThatStartedThisActivity = getIntent();
+
+            if (intentThatStartedThisActivity.hasExtra("Step Id")) {
+                Bundle bundle = intentThatStartedThisActivity.getBundleExtra("Step Id");
+                id = bundle.getInt("Step");
+
+
+                recipeId = bundle.getInt("Recipe Id");
+                textView.setText(String.valueOf(id));
+
+                String bakingJson = JsonUtils.getJSONString(this);
+                recipes = JsonUtils.extractFeaturesFromJson(bakingJson);
+
+                String title = recipes.get(recipeId).getName();
+                setTitle(title);
+                String instruction = recipes.get(recipeId).getSteps().get(id).getDescription();
+                if (id == 0) {
+                    previousButton.setVisibility(View.INVISIBLE);
+                }
+                if (id == recipes.get(recipeId).getSteps().size() - 1) {
+                    nextButton.setVisibility(View.INVISIBLE);
+                }
+
+                mInstructionFragment = new InstructionFragment();
+                Bundle instructionBundle = new Bundle();
+                instructionBundle.putString("Instruction", instruction);
+                mInstructionFragment.setArguments(instructionBundle);
+
+                mFragmentManager = getSupportFragmentManager();
+                mFragmentManager.beginTransaction()
+                        .add(R.id.instruction_container, mInstructionFragment)
+                        .commit();
+
+                String videoURL = recipes.get(recipeId).getSteps().get(id).getVideoURL();
+                mMediaPlayerFragment = new MediaPlayerFragment();
+                Bundle videoBundle = new Bundle();
+                videoBundle.putString("Video URL", videoURL);
+                mMediaPlayerFragment.setArguments(videoBundle);
+
+                mFragmentManager.beginTransaction()
+                        .add(R.id.media_container, mMediaPlayerFragment)
+                        .commit();
             }
-
-            mInstructionFragment = new InstructionFragment();
-            Bundle instructionBundle = new Bundle();
-            instructionBundle.putString("Instruction", instruction);
-            mInstructionFragment.setArguments(instructionBundle);
-
-            mFragmentManager = getSupportFragmentManager();
-            mFragmentManager.beginTransaction()
-                    .add(R.id.instruction_container, mInstructionFragment)
-                    .commit();
-
-            String videoURL = recipes.get(recipeId).getSteps().get(id).getVideoURL();
-            mMediaPlayerFragment = new MediaPlayerFragment();
-            Bundle videoBundle = new Bundle();
-            videoBundle.putString("Video URL", videoURL);
-            mMediaPlayerFragment.setArguments(videoBundle);
-
-            mFragmentManager.beginTransaction()
-                    .add(R.id.media_container, mMediaPlayerFragment)
-                    .commit();
         }
     }
 
-    public void clickPreviousStep(View view){
+    public void clickPreviousStep(View view) {
 
         nextButton.setVisibility(View.VISIBLE);
         id = id - 1;
-        if (id == 0){
+        if (id == 0) {
             previousButton.setVisibility(View.INVISIBLE);
         }
 
@@ -108,7 +130,7 @@ public class RecipeStepActivity extends AppCompatActivity {
         String videoURL = recipes.get(recipeId).getSteps().get(id).getVideoURL();
         mMediaPlayerFragment = new MediaPlayerFragment();
         Bundle videoBundle = new Bundle();
-        videoBundle.putString("Video URL",videoURL);
+        videoBundle.putString("Video URL", videoURL);
         mMediaPlayerFragment.setArguments(videoBundle);
 
         getSupportFragmentManager().beginTransaction()
@@ -117,11 +139,11 @@ public class RecipeStepActivity extends AppCompatActivity {
 
     }
 
-    public void clickNextStep(View view){
+    public void clickNextStep(View view) {
         previousButton.setVisibility(View.VISIBLE);
 
         id = id + 1;
-        if (id == recipes.get(recipeId).getSteps().size() - 1){
+        if (id == recipes.get(recipeId).getSteps().size() - 1) {
             nextButton.setVisibility(View.INVISIBLE);
         }
         textView.setText(String.valueOf(id));
@@ -134,13 +156,13 @@ public class RecipeStepActivity extends AppCompatActivity {
         mInstructionFragment.setArguments(instructionBundle);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.instruction_container,mInstructionFragment)
+                .replace(R.id.instruction_container, mInstructionFragment)
                 .commit();
 
         String videoURL = recipes.get(recipeId).getSteps().get(id).getVideoURL();
         mMediaPlayerFragment = new MediaPlayerFragment();
         Bundle videoBundle = new Bundle();
-        videoBundle.putString("Video URL",videoURL);
+        videoBundle.putString("Video URL", videoURL);
         mMediaPlayerFragment.setArguments(videoBundle);
 
         getSupportFragmentManager().beginTransaction()
